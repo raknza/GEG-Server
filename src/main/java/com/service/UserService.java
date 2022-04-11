@@ -2,7 +2,10 @@ package com.service;
 
 import com.dao.UserDao;
 import com.exception.BaseException;
+import com.model.LoginResult;
 import com.model.User;
+import com.utils.JwtHandler;
+import com.utils.MD5Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +15,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@ComponentScan("com.dao")
 @Configuration
 @EnableMongoRepositories
+@ComponentScan({"com.utils"})
 public class UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private JwtHandler jwtHandler;
 
     /**
      * Get all user
@@ -43,6 +48,23 @@ public class UserService {
         }
         else{
             throw new BaseException("Username already exists");
+        }
+    }
+
+    public LoginResult login(String username, String password){
+        boolean result = false;
+        User user = userDao.findByUsername(username);
+        if (user != null) {
+            result = user.checkPassword(MD5Helper.encodeToMD5(password));
+        }
+        else{
+            return new LoginResult(false,"","cannot find user");
+        }
+        if(result){
+            return new LoginResult(true,jwtHandler.generateToken(username),"login success");
+        }
+        else{
+            return new LoginResult(false,"","password error");
         }
     }
 }

@@ -49,4 +49,15 @@ public class UserController {
         return response;
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    ) {
+        ResponseEntity<Object> response;
+        Object result = userService.login(username,password);
+        response = new ResponseEntity<Object>(result, HttpStatus.OK);
+        return response;
+    }
+
 }

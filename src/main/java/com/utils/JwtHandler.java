@@ -7,31 +7,23 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
 
-public class JwtConfig {
+@Component
+@Configuration
+public class JwtHandler {
   private static Key key = null;
-  private static JwtConfig jwtConfig = null;
-  private static final Logger LOGGER = LoggerFactory.getLogger(JwtConfig.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(JwtHandler.class);
   
-  private JwtConfig() {
+  public JwtHandler() {
     key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
   }
-  
-  /**
-   * 
-   * @return jwt class
-   */
-  public static JwtConfig getInstance() {
-    if (jwtConfig == null) {
-      jwtConfig = new JwtConfig();
-    }
-    return jwtConfig;
-  }
-  
+
   /**
    * create the jwt 
    * @return token
