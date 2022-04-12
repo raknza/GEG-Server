@@ -3,7 +3,6 @@ package com.controller;
 import com.exception.BaseException;
 import com.service.UserService;
 import com.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,11 @@ import java.util.List;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    private final UserService userService;
 
-    @Autowired
-    UserService userService;
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
 
 
     @GetMapping("/getAllUser")

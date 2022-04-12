@@ -20,8 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 @ComponentScan({"com.utils"})
 public class UserEventService {
 
-    @Autowired
-    private UserEventDao userEventDao;
+    private final UserEventDao userEventDao;
+
+    public UserEventService(UserEventDao userEventDao){
+        this.userEventDao = userEventDao;
+    }
 
 
     /**

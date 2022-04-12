@@ -20,10 +20,13 @@ import java.util.List;
 @ComponentScan({"com.utils"})
 public class UserService {
 
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private JwtHandler jwtHandler;
+    private final UserDao userDao;
+    private final JwtHandler jwtHandler;
+
+    public UserService(UserDao userDao, JwtHandler jwtHandler){
+        this.userDao = userDao;
+        this.jwtHandler = jwtHandler;
+    }
 
     /**
      * Get all user

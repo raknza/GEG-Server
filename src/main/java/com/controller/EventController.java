@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/user/event")
 public class EventController {
 
-    @Autowired
-    UserEventService userEventService;
+    private final UserEventService userEventService;
+
+    public EventController(UserEventService userEventService){
+        this.userEventService = userEventService;
+    }
 
     /**
      * Student Event Log
