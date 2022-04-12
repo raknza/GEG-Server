@@ -6,7 +6,6 @@ import com.model.UserEvent;
 import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;

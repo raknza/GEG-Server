@@ -6,7 +6,6 @@ import com.model.LoginResult;
 import com.model.User;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
