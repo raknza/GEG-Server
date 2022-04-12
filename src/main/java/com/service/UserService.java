@@ -7,7 +7,6 @@ import com.model.User;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -28,7 +27,7 @@ public class UserService {
 
     /**
      * Get all user
-     * 
+     *
      * @return all data in collection 'Users'
      */
     public List<User> findAll(){
