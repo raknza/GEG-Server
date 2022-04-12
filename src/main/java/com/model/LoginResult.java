@@ -1,5 +1,10 @@
 package com.model;
 
+/**
+* User login result. There has 3 members in this class, include
+* status(is login success?), token(jwt token), message.
+*
+* */
 public class LoginResult {
     String token;
     boolean status;

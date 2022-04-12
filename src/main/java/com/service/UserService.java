@@ -7,6 +7,7 @@ import com.model.User;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -27,8 +28,8 @@ public class UserService {
 
     /**
      * Get all user
-     *
-     * @return response
+     * 
+     * @return all data in collection 'Users'
      */
     public List<User> findAll(){
         return userDao.findAll();
@@ -51,6 +52,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Login by username and password
+     * @param username the username
+     * @param password will encode to MD5
+     * @return the result as {@link LoginResult}
+     */
     public LoginResult login(String username, String password){
         boolean result = false;
         User user = userDao.findByUsername(username);
