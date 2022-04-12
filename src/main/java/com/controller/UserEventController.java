@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/user/event")
-public class EventController {
+public class UserEventController {
 
     private final UserEventService userEventService;
 
-    public EventController(UserEventService userEventService){
+    public UserEventController(UserEventService userEventService){
         this.userEventService = userEventService;
     }
 
