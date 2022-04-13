@@ -1,17 +1,15 @@
 package com.model;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@ComponentScan({"com.service"})
 @Document(collection = "#{T(com.utils.CollectionNameHolder).get()}")
 public class UserEvent extends BaseEntity {
 
     private String username;
-    private String eventName;
+    private String event_name;
     private String ip;
     private String time;
-    private org.bson.Document eventContent;
+    private org.bson.Document event_content;
 
     public UserEvent(){
         super();
@@ -25,10 +23,10 @@ public class UserEvent extends BaseEntity {
     public UserEvent(String username, String eventName,String ip, String time, org.bson.Document eventContent){
         super();
         this.username = username;
-        this.eventName = eventName;
+        this.event_name = eventName;
         this.ip = ip;
         this.time = time;
-        this.eventContent = eventContent;
+        this.event_content = eventContent;
     }
 
 
@@ -39,9 +37,9 @@ public class UserEvent extends BaseEntity {
         this.username = username;
     }
 
-    public String getEventName(){ return eventName; }
+    public String getEventName(){ return event_name; }
     public void setEventName(String eventName){
-        this.eventName = eventName;
+        this.event_name = eventName;
     }
 
     public String getIp(){
@@ -59,10 +57,10 @@ public class UserEvent extends BaseEntity {
     }
 
     public org.bson.Document getEventContent(){
-        return eventContent;
+        return event_content;
     }
     public void setEventContent(org.bson.Document eventContent){
-        this.eventContent = eventContent;
+        this.event_content = eventContent;
     }
 
 }
