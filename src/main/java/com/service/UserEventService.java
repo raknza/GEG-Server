@@ -28,6 +28,9 @@ public class UserEventService {
 
     /**
      * Log user event
+     * @param username the username
+     * @param eventName the event name of student's activity
+     * @param eventContent the content of event, should be json string
      * @return result
      */
     public Object logUserEvent(HttpServletRequest request, String username, String eventName, String eventContent) {

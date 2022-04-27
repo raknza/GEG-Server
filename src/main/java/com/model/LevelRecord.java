@@ -15,9 +15,9 @@ public class LevelRecord extends BaseEntity {
     }
 
     /**
-     * Model of User, Clients must passed name, username and password.
-     * Password will be encode to MD5 string in constructor.
-     *
+     * Model of LevelRecord, when a user passed a level, this should be passed to log
+     * user's record. Client must passed user's username, user's time cost and user's
+     * line cost in the level.
      */
     public LevelRecord(String username, String time, int timeCost, int lineCost){
         super();
