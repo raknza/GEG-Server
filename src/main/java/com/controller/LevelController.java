@@ -3,10 +3,7 @@ package com.controller;
 import com.service.LevelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/level")
@@ -29,5 +26,10 @@ public class LevelController {
         Object result = levelService.logLevelRecord(username, timeCost, lineCost, level);
         response = new ResponseEntity<Object>(result, HttpStatus.OK);
         return response;
+    }
+
+    @GetMapping("/getLevelLeaderboard")
+    public ResponseEntity<Object> getLevelLeaderboard(@RequestParam("level") int level) {
+        return new ResponseEntity<Object>(levelService.getLevelLeaderboard(level), HttpStatus.OK);
     }
 }

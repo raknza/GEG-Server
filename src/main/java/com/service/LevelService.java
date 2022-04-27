@@ -6,6 +6,7 @@ import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 import net.minidev.json.JSONObject;
@@ -23,7 +24,11 @@ public class LevelService {
     }
 
     /**
-     * Log user event
+     * Log user level record
+     * @param username the username
+     * @param timeCost the time cost in level
+     * @param lineCost the line cost in level
+     * @param level the level which user has passed
      * @return result
      */
     public Object logLevelRecord(String username, int timeCost, int lineCost,int level) {
@@ -49,6 +54,17 @@ public class LevelService {
             result = levelRecordDao.insert(newLevelRecord);
         }
         return result;
+    }
+
+    /**
+     * Get level leaderboard
+     * @param level the level
+     * @return leaderboard in the level, and will be ascending order by time cost,
+     * line cost and be descending order by time
+     */
+    public Object getLevelLeaderboard(int level) {
+        CollectionNameHolder.set("level" + level + "_record");
+        return levelRecordDao.findAll(Sort.by("time_cost","line_cost").ascending().and(Sort.by("time").descending()));
     }
 
 }
