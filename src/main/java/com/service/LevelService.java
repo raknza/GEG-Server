@@ -67,4 +67,22 @@ public class LevelService {
         return levelRecordDao.findAll(Sort.by("time_cost","line_cost").ascending().and(Sort.by("time").descending()));
     }
 
+    /**
+     * Get number of level has been passed by user
+     * @param username the username
+     * @param start the start of range
+     * @param end the end of range
+     * @return result
+     */
+    public int getUserLevelPassedCount(String username,int start,int end){
+        int count = 0;
+        for (int level = start ; level <= end ; level++){
+            CollectionNameHolder.set("level" + level + "_record");
+            if( levelRecordDao.findByUsername(username) != null ){
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

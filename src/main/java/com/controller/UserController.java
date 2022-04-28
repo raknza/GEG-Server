@@ -61,4 +61,10 @@ public class UserController {
         return response;
     }
 
+    @GetMapping("/getUserPoints")
+    public ResponseEntity<Object> getUserPoints(@RequestParam("username") String username){
+        Object result = userService.getUserPoints(username);
+        return new ResponseEntity<Object>(result, HttpStatus.OK);
+    }
+
 }
