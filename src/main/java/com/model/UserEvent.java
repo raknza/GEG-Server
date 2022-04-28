@@ -20,13 +20,13 @@ public class UserEvent extends BaseEntity {
      * Password will be encode to MD5 string in constructor.
      *
      */
-    public UserEvent(String username, String eventName,String ip, String time, org.bson.Document eventContent){
+    public UserEvent(String username, String eventName,String ip, String time, String eventContent){
         super();
         this.username = username;
         this.event_name = eventName;
         this.ip = ip;
         this.time = time;
-        this.event_content = eventContent;
+        this.event_content = org.bson.Document.parse(eventContent);;
     }
 
 

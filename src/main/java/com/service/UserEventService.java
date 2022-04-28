@@ -37,8 +37,7 @@ public class UserEventService {
         String ip = getClientIpAddress(request);
         String nowTime = DateHelper.getNowTime();
         CollectionNameHolder.set(username);
-        Document eventContentDocument = Document.parse(eventContent);
-        UserEvent userEvent = new UserEvent(username, eventName, ip, nowTime, eventContentDocument);
+        UserEvent userEvent = new UserEvent(username, eventName, ip, nowTime, eventContent);
         return userEventDao.insert(userEvent);
     }
 
