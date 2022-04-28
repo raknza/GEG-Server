@@ -67,4 +67,10 @@ public class UserController {
         return new ResponseEntity<Object>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllUsersPoints")
+    public ResponseEntity<Object> getAllUsersPoints(){
+        Object result = userService.getAllUsersPoints();
+        return new ResponseEntity<Object>(result, HttpStatus.OK);
+    }
+
 }

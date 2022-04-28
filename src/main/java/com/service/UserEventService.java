@@ -5,7 +5,6 @@ import com.dao.UserEventDao;
 import com.model.UserEvent;
 import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
-import org.bson.Document;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -39,6 +38,11 @@ public class UserEventService {
         CollectionNameHolder.set(username);
         UserEvent userEvent = new UserEvent(username, eventName, ip, nowTime, eventContent);
         return userEventDao.insert(userEvent);
+    }
+
+    public Object getAllUserEvent(String username){
+        CollectionNameHolder.set(username);
+        return userEventDao.findAll();
     }
 
     /**

@@ -1,12 +1,13 @@
 package com.model;
 
+
 /**
  * User's point in game. According to 2 factors, levelPassedCounts and achievementCounts,
  * which present player's in game performance. These two factors will be convert to
  * levelPoint and achievementPoints. Sum of them are gamePoints.
  *
  * */
-public class UserPoints {
+public class UserPoints implements Comparable<UserPoints> {
 
     int gamePoints;
     int levelPoints;
@@ -30,4 +31,17 @@ public class UserPoints {
     public int getLevelPassedCounts(){ return levelPassedCounts; }
     public int getAchievementCounts(){ return achievementCounts; }
     public String getUser(){ return user; }
+
+    @Override
+    public int compareTo(UserPoints userPoints) {
+        if(gamePoints == userPoints.gamePoints && levelPoints == userPoints.levelPoints ) {
+            return userPoints.achievementPoints - achievementPoints;
+        }
+        else if ( gamePoints == userPoints.gamePoints ) {
+            return userPoints.levelPoints - levelPoints;
+        }
+        else {
+            return userPoints.gamePoints - gamePoints;
+        }
+    }
 }
