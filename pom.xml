@@ -42,18 +42,6 @@
 			<artifactId>mongodb-driver-sync</artifactId>
 			<version>4.2.0</version>
 		</dependency>
-		<!-- MySQL -->
-		<dependency>
-			<groupId>
-				mysql
-			</groupId>
-			<artifactId>
-				mysql-connector-java
-			</artifactId>
-			<version>
-				5.1.38
-			</version>
-		</dependency>
 		<!-- jsonwebtoken -->
 		<dependency>
 			<groupId>
