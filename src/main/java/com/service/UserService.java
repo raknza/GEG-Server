@@ -10,7 +10,6 @@ import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Configuration
 @EnableMongoRepositories
-@ComponentScan({"com.utils"})
+@ComponentScan({"com.utils","com.dao"})
 public class UserService {
 
     private final UserDao userDao;
@@ -59,8 +57,8 @@ public class UserService {
      */
     public Object createUser(String name, String username, String password) throws Exception {
         if ( userDao.findByUsername(username) == null ){
-            User user = new User(name, username, password);
-            return userDao.save(user);
+            User user = new User(name, username, MD5Helper.encodeToMD5(password));
+            return userDao.insert(user);
         }
         else{
             throw new BaseException("Username already exists");
@@ -141,4 +139,6 @@ public class UserService {
 
         return allUsersPoints;
     }
+
+
 }
