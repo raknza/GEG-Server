@@ -1,14 +1,10 @@
 package com.model;
 
-import com.utils.MD5Helper;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  * Model of User, data will be saved in collection 'Users'
  *
  */
-@Document(collection = "Users")
-public class User extends BaseEntity {
+public class User extends BaseEntity{
 
     private String username;
     private String name;
@@ -20,14 +16,13 @@ public class User extends BaseEntity {
 
     /**
      * Constructor of User class, Clients must passed name, username and password.
-     * Password will be encode to MD5 string in constructor.
      *
      */
     public User(String name, String username, String password){
         super();
         this.name = name;
         this.username = username;
-        this.password = MD5Helper.encodeToMD5(password);
+        this.password = password;
     }
 
 
