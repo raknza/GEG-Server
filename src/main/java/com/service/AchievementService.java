@@ -6,14 +6,12 @@ import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Configuration
 @EnableMongoRepositories
 @ComponentScan({"com.utils"})
 public class AchievementService {

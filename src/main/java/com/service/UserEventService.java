@@ -6,14 +6,12 @@ import com.model.UserEvent;
 import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 
 @Service
-@Configuration
 @EnableMongoRepositories
 @ComponentScan({"com.utils"})
 public class UserEventService {
