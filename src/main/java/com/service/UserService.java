@@ -5,7 +5,6 @@ import com.dao.UserDao;
 import com.dao.UserEventDao;
 import com.exception.BaseException;
 import com.model.*;
-import com.utils.CollectionNameHolder;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import net.minidev.json.JSONObject;
@@ -98,7 +97,7 @@ public class UserService {
             achievementCounts = achievementRecords.size();
         }
         // get level passed record
-        CollectionNameHolder.set(username);
+        userEventDao.setUser(username);
         List<UserEvent> userEvents = userEventDao.findByEventName("level_passed");
         List<String> levelPassed = new ArrayList<String>();
         if( userEvents!= null ){
