@@ -72,7 +72,7 @@ public class UserEventDao implements BaseDao {
     @Override
     public UserEvent findById(String id) {
         List<Document> eventDocument = mongoDb.getCollection(CollectionNameHolder.get(), idString,id);
-        if(!eventDocument.isEmpty()){
+        if(eventDocument != null){
             Document doc = eventDocument.get(0);
             UserEvent event = new UserEvent(doc.getString(usernameString),doc.getString(eventNameString),
                     doc.getString(ipString), doc.getString(timeString), (Document) doc.get(eventContentString));

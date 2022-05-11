@@ -67,9 +67,12 @@ public class UserDao implements BaseDao {
     }
 
     @Override
-    public Object findById(String id) {
-        List<Document> user = mongoDb.getCollection(collectionName, idString,id);
-        if(!user.isEmpty()){
+    public User findById(String id) {
+        List<Document> userDocs = mongoDb.getCollection(collectionName, idString,id);
+        if(userDocs != null){
+            Document userDoc = userDocs.get(0);
+            User user = new User(userDoc.getString(nameString),userDoc.getString(usernameString),userDoc.getString(passwordString));
+            user.setId(userDoc.getObjectId(idString).toString());
             return user;
         }
         return null;
@@ -79,7 +82,7 @@ public class UserDao implements BaseDao {
     public Object save(Object entity) {
         User user = (User)entity;
         List<Document> oldUser = mongoDb.getCollection(collectionName, usernameString,user.getUsername());
-        if(!oldUser.isEmpty()){
+        if(oldUser != null){
             Document newUserDoc = new Document(
                     idString, oldUser.get(0).getString(idString))
                     .append(usernameString, user.getUsername())

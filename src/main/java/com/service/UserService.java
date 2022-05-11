@@ -10,7 +10,6 @@ import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@EnableMongoRepositories
-@ComponentScan({"com.utils","com.dao"})
+@ComponentScan({"com.utils", "com.dao"})
 public class UserService {
 
     private final UserDao userDao;
