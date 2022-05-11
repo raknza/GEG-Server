@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import net.minidev.json.JSONObject;
 
 @Service
-@ComponentScan({"com.utils"})
+@ComponentScan({"com.dao"})
 @PropertySource(value = "classpath:mongo_collection.properties")
 public class LevelService {
 

@@ -37,8 +37,11 @@ public class UserEventDao implements BaseDao {
     }
 
     public List<UserEvent> findByEventName(String eventName){
-        List<Document> oldEvents = mongoDb.getCollection(CollectionNameHolder.get(), eventName,eventName);
+        List<Document> oldEvents = mongoDb.getCollection(CollectionNameHolder.get(), eventNameString,eventName);
         List<UserEvent> allUserEvents = new ArrayList<UserEvent>();
+        if(oldEvents == null){
+            return null;
+        }
         for(int i = 0 ; i< oldEvents.size() ; i++){
             Document doc = oldEvents.get(i);
             UserEvent event = new UserEvent(doc.getString(usernameString),doc.getString(eventNameString),
@@ -46,7 +49,7 @@ public class UserEventDao implements BaseDao {
             event.setId(doc.getObjectId(idString).toString());
             allUserEvents.add(event);
         }
-        return null;
+        return allUserEvents;
     }
 
     @Override

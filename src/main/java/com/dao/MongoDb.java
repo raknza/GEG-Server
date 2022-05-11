@@ -35,7 +35,7 @@ public class MongoDb {
 
     public List<Document> getCollection(String collection,
                                 String filterKey,
-                                String filterValue) {
+                                Object filterValue) {
         MongoCollection<Document> documents = getClient().getCollection(collection);
         FindIterable<Document> findIterable = documents.find().filter(eq(filterKey, filterValue));
         MongoCursor<Document> mongoCursor = findIterable.iterator();
