@@ -1,6 +1,6 @@
 package com.service;
 
-import com.dao.AchievementRecoardDao;
+import com.dao.AchievementRecordDao;
 import com.dao.UserDao;
 import com.dao.UserEventDao;
 import com.exception.BaseException;
@@ -22,18 +22,15 @@ public class UserService {
 
     private final UserDao userDao;
     private final JwtHandler jwtHandler;
-    private final AchievementRecoardDao achievementRecoardDao;
-    private final LevelService levelService;
+    private final AchievementRecordDao achievementRecordDao;
     private final UserEventDao userEventDao;
 
     public UserService(UserDao userDao, JwtHandler jwtHandler,
-                       AchievementRecoardDao achievementRecoardDao,
-                       LevelService levelService,
+                       AchievementRecordDao achievementRecordDao,
                        UserEventDao userEventDao){
         this.userDao = userDao;
         this.jwtHandler = jwtHandler;
-        this.achievementRecoardDao = achievementRecoardDao;
-        this.levelService = levelService;
+        this.achievementRecordDao = achievementRecordDao;
         this.userEventDao = userEventDao;
     }
 
@@ -95,9 +92,8 @@ public class UserService {
         int levelPassedCounts = 0;
         int achievementCounts = 0;
         // get achievement_record
-        String collectionName = username+ "_achievement_record";
-        CollectionNameHolder.set(collectionName);
-        List<AchievementRecord> achievementRecords = achievementRecoardDao.findAll();
+        achievementRecordDao.setUser(username);
+        List<AchievementRecord> achievementRecords = achievementRecordDao.findAll();
         if(achievementRecords != null){
             achievementCounts = achievementRecords.size();
         }

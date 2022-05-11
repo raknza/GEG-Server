@@ -1,25 +1,22 @@
 package com.service;
 
-import com.dao.AchievementRecoardDao;
+import com.dao.AchievementRecordDao;
 import com.model.AchievementRecord;
-import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@EnableMongoRepositories
-@ComponentScan({"com.utils"})
+@ComponentScan({"com.dao"})
 public class AchievementService {
 
-    private final AchievementRecoardDao achievementRecoardDao;
+    private final AchievementRecordDao achievementRecordDao;
 
-    public AchievementService(AchievementRecoardDao achievementRecoardDao){
-        this.achievementRecoardDao = achievementRecoardDao;
+    public AchievementService(AchievementRecordDao achievementRecordDao){
+        this.achievementRecordDao = achievementRecordDao;
     }
 
     /**
@@ -30,13 +27,12 @@ public class AchievementService {
      */
     public Object logAchievement(String username, String achievement) {
 
-        String collectionName = username+ "_achievement_record";
-        CollectionNameHolder.set(collectionName);
+        achievementRecordDao.setUser(username);
         String nowTime = DateHelper.getNowTime();
         AchievementRecord newRecord = new AchievementRecord(nowTime,achievement);
-        AchievementRecord oldRecord = achievementRecoardDao.findByAchievementId(newRecord.getAchievement().getInteger("id"));
+        AchievementRecord oldRecord = achievementRecordDao.findByAchievementId(newRecord.getAchievement().getInteger("id"));
         if(oldRecord == null){
-            return achievementRecoardDao.insert(newRecord);
+            return achievementRecordDao.insert(newRecord);
         }
         else{
             return new JSONObject().appendField("message","Already have this achievement");
@@ -51,9 +47,8 @@ public class AchievementService {
      */
     public Object getUserAchievements(String username) {
 
-        String collectionName = username+ "_achievement_record";
-        CollectionNameHolder.set(collectionName);
-        List<AchievementRecord> achievementRecords = achievementRecoardDao.findAll();
+        achievementRecordDao.setUser(username);
+        List<AchievementRecord> achievementRecords = achievementRecordDao.findAll();
         if(achievementRecords != null){
             return achievementRecords;
         }
