@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.model.User;
 import com.model.UserEvent;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -109,6 +108,10 @@ public class UserEventDao implements BaseDao {
                 .append(eventContentString, event.getEventContent());
 
         return mongoDb.getCollection(event.getUsername()).insertOne(doc);
+    }
+
+    public void setUser(String username){
+        CollectionNameHolder.set(username);
     }
 
 }

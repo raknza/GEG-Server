@@ -4,7 +4,6 @@ package com.service;
 import com.dao.UserDao;
 import com.dao.UserEventDao;
 import com.model.UserEvent;
-import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
@@ -36,13 +35,12 @@ public class UserEventService {
         }
         String ip = getClientIpAddress(request);
         String nowTime = DateHelper.getNowTime();
-        CollectionNameHolder.set(username);
         UserEvent userEvent = new UserEvent(username, eventName, ip, nowTime, eventContent);
         return userEventDao.insert(userEvent);
     }
 
     public Object getUserEvents(String username){
-        CollectionNameHolder.set(username);
+        userEventDao.setUser(username);
         return userEventDao.findAll();
     }
 
