@@ -2,19 +2,15 @@ package com.service;
 
 import com.dao.LevelRecordDao;
 import com.model.LevelRecord;
-import com.utils.CollectionNameHolder;
 import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import net.minidev.json.JSONObject;
 
 @Service
-@Configuration
-@EnableMongoRepositories
-@ComponentScan({"com.utils"})
+@ComponentScan({"com.dao"})
+@PropertySource(value = "classpath:mongo_collection.properties")
 public class LevelService {
 
     private final LevelRecordDao levelRecordDao;
@@ -33,7 +29,7 @@ public class LevelService {
      */
     public Object logLevelRecord(String username, int timeCost, int lineCost,int level) {
         String nowTime = DateHelper.getNowTime();
-        CollectionNameHolder.set("level" + level + "_record");
+        levelRecordDao.setLevel(level);
         LevelRecord oldRecord = levelRecordDao.findByUsername(username);
         LevelRecord newLevelRecord = new LevelRecord(username, nowTime, timeCost, lineCost);
         Object result = null;
@@ -63,8 +59,8 @@ public class LevelService {
      * line cost and be descending order by time
      */
     public Object getLevelLeaderboard(int level) {
-        CollectionNameHolder.set("level" + level + "_record");
-        return levelRecordDao.findAll(Sort.by("time_cost","line_cost").ascending().and(Sort.by("time").descending()));
+        levelRecordDao.setLevel(level);
+        return levelRecordDao.findAll();
     }
 
     /**
@@ -77,7 +73,7 @@ public class LevelService {
     public int getUserLevelPassedCount(String username,int start,int end){
         int count = 0;
         for (int level = start ; level <= end ; level++){
-            CollectionNameHolder.set("level" + level + "_record");
+            levelRecordDao.setLevel(level);
             if( levelRecordDao.findByUsername(username) != null ){
                 count++;
             }

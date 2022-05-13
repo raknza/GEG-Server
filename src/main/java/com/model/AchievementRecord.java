@@ -1,11 +1,10 @@
 package com.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.Document;
 
-@Document(collection = "#{T(com.utils.CollectionNameHolder).get()}")
 public class AchievementRecord extends BaseEntity {
     private String time;
-    private org.bson.Document achievement;
+    private Document achievement;
 
     public AchievementRecord(){
         super();
@@ -20,7 +19,13 @@ public class AchievementRecord extends BaseEntity {
     public AchievementRecord(String time, String achievement){
         super();
         this.time = time;
-        this.achievement = org.bson.Document.parse(achievement);
+        this.achievement = Document.parse(achievement);
+    }
+
+    public AchievementRecord(String time, Document achievement){
+        super();
+        this.time = time;
+        this.achievement = achievement;
     }
 
     public String getTime(){

@@ -1,8 +1,5 @@
 package com.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "#{T(com.utils.CollectionNameHolder).get()}")
 public class LevelRecord extends BaseEntity {
 
     private String username;

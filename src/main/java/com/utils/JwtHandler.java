@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-@Configuration
 public class JwtHandler {
   private static Key key = null;
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtHandler.class);

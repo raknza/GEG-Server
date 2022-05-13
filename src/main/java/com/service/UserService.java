@@ -1,17 +1,14 @@
 package com.service;
 
-import com.dao.AchievementRecoardDao;
+import com.dao.AchievementRecordDao;
 import com.dao.UserDao;
 import com.dao.UserEventDao;
 import com.exception.BaseException;
 import com.model.*;
-import com.utils.CollectionNameHolder;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
 import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,25 +16,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Configuration
-@EnableMongoRepositories
-@ComponentScan({"com.utils"})
+@ComponentScan({"com.utils", "com.dao"})
 public class UserService {
 
     private final UserDao userDao;
     private final JwtHandler jwtHandler;
-    private final AchievementRecoardDao achievementRecoardDao;
-    private final LevelService levelService;
+    private final AchievementRecordDao achievementRecordDao;
     private final UserEventDao userEventDao;
 
     public UserService(UserDao userDao, JwtHandler jwtHandler,
-                       AchievementRecoardDao achievementRecoardDao,
-                       LevelService levelService,
+                       AchievementRecordDao achievementRecordDao,
                        UserEventDao userEventDao){
         this.userDao = userDao;
         this.jwtHandler = jwtHandler;
-        this.achievementRecoardDao = achievementRecoardDao;
-        this.levelService = levelService;
+        this.achievementRecordDao = achievementRecordDao;
         this.userEventDao = userEventDao;
     }
 
@@ -59,8 +51,8 @@ public class UserService {
      */
     public Object createUser(String name, String username, String password) throws Exception {
         if ( userDao.findByUsername(username) == null ){
-            User user = new User(name, username, password);
-            return userDao.save(user);
+            User user = new User(name, username, MD5Helper.encodeToMD5(password));
+            return userDao.insert(user);
         }
         else{
             throw new BaseException("Username already exists");
@@ -99,14 +91,13 @@ public class UserService {
         int levelPassedCounts = 0;
         int achievementCounts = 0;
         // get achievement_record
-        String collectionName = username+ "_achievement_record";
-        CollectionNameHolder.set(collectionName);
-        List<AchievementRecord> achievementRecords = achievementRecoardDao.findAll();
+        achievementRecordDao.setUser(username);
+        List<AchievementRecord> achievementRecords = achievementRecordDao.findAll();
         if(achievementRecords != null){
             achievementCounts = achievementRecords.size();
         }
         // get level passed record
-        CollectionNameHolder.set(username);
+        userEventDao.setUser(username);
         List<UserEvent> userEvents = userEventDao.findByEventName("level_passed");
         List<String> levelPassed = new ArrayList<String>();
         if( userEvents!= null ){
@@ -141,4 +132,6 @@ public class UserService {
 
         return allUsersPoints;
     }
+
+
 }

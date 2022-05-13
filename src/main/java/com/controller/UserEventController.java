@@ -3,10 +3,7 @@ package com.controller;
 import com.service.UserEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +28,17 @@ public class UserEventController {
                                                   @RequestParam("eventContent") String eventContent) {
 
         Object result = userEventService.logUserEvent(request, username, eventName, eventContent);
+        return new ResponseEntity<Object>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Get student Event
+     * @return Response
+     */
+    @GetMapping("getUserEvents")
+    public ResponseEntity<Object> getUserEvents(@RequestParam("username") String username) {
+
+        Object result = userEventService.getUserEvents(username);
         return new ResponseEntity<Object>(result, HttpStatus.OK);
     }
 }

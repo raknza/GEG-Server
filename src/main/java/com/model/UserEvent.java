@@ -1,15 +1,14 @@
 package com.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.Document;
 
-@Document(collection = "#{T(com.utils.CollectionNameHolder).get()}")
 public class UserEvent extends BaseEntity {
 
     private String username;
-    private String event_name;
+    private String eventName;
     private String ip;
     private String time;
-    private org.bson.Document event_content;
+    private Document eventContent;
 
     public UserEvent(){
         super();
@@ -23,10 +22,24 @@ public class UserEvent extends BaseEntity {
     public UserEvent(String username, String eventName,String ip, String time, String eventContent){
         super();
         this.username = username;
-        this.event_name = eventName;
+        this.eventName = eventName;
         this.ip = ip;
         this.time = time;
-        this.event_content = org.bson.Document.parse(eventContent);;
+        this.eventContent = Document.parse(eventContent);;
+    }
+
+    /**
+     * Model of User, Clients must passed name, username and password.
+     * Password will be encode to MD5 string in constructor.
+     *
+     */
+    public UserEvent(String username, String eventName,String ip, String time, Document eventContent){
+        super();
+        this.username = username;
+        this.eventName = eventName;
+        this.ip = ip;
+        this.time = time;
+        this.eventContent = eventContent;
     }
 
 
@@ -37,9 +50,9 @@ public class UserEvent extends BaseEntity {
         this.username = username;
     }
 
-    public String getEventName(){ return event_name; }
+    public String getEventName(){ return eventName; }
     public void setEventName(String eventName){
-        this.event_name = eventName;
+        this.eventName = eventName;
     }
 
     public String getIp(){
@@ -57,10 +70,10 @@ public class UserEvent extends BaseEntity {
     }
 
     public org.bson.Document getEventContent(){
-        return event_content;
+        return eventContent;
     }
     public void setEventContent(org.bson.Document eventContent){
-        this.event_content = eventContent;
+        this.eventContent = eventContent;
     }
 
 }
