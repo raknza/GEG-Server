@@ -36,8 +36,6 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        jwtRequestFilter.setAuthenticationManager(authenticationManager);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 

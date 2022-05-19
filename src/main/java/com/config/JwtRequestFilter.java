@@ -23,11 +23,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtHandler jwtHandler;
     private final UserDao userDao;
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    public JwtRequestFilter(JwtHandler jwtHandler, UserDao userDao,AuthenticationManager authenticationManager){
+    public JwtRequestFilter(JwtHandler jwtHandler, UserDao userDao, AuthenticationManager authenticationManager){
         this.jwtHandler = jwtHandler;
         this.userDao = userDao;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -69,7 +70,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    public void setAuthenticationManager(AuthenticationManager authenticationManager){
-        this.authenticationManager = authenticationManager;
-    }
 }
