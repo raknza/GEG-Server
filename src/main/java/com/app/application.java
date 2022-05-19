@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.controller"})
+@ComponentScan({"com.config"})
 @RestController
 @CrossOrigin
 @EnableMongoRepositories(basePackages = {"com.dao"})

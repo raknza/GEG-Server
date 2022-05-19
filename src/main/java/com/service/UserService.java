@@ -51,7 +51,7 @@ public class UserService {
      */
     public Object createUser(String name, String username, String password) throws Exception {
         if ( userDao.findByUsername(username) == null ){
-            User user = new User(name, username, MD5Helper.encodeToMD5(password));
+            User user = new User(name, username, MD5Helper.encodeToMD5(password), "player");
             return userDao.insert(user);
         }
         else{

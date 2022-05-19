@@ -9,6 +9,7 @@ public class User extends BaseEntity{
     private String username;
     private String name;
     private String password;
+    private String role;
 
     public User(){
         super();
@@ -18,11 +19,12 @@ public class User extends BaseEntity{
      * Constructor of User class, Clients must passed name, username and password.
      *
      */
-    public User(String name, String username, String password){
+    public User(String name, String username, String password, String role){
         super();
         this.name = name;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
 
@@ -45,6 +47,13 @@ public class User extends BaseEntity{
     }
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public String getRole(){
+        return role;
+    }
+    public void setRole(String role){
+        this.role = role;
     }
 
     public boolean checkPassword(String password){ return password.equals(this.password); }
