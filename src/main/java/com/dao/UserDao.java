@@ -26,6 +26,8 @@ public class UserDao implements BaseDao {
     String nameString;
     @Value("${key.password}")
     String passwordString;
+    @Value("${key.role}")
+    String roleString;
     @Value("${user.collection}")
     String collectionName;
 
@@ -42,7 +44,8 @@ public class UserDao implements BaseDao {
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
             if(doc.getString(usernameString).equals(username)){
-                User user = new User(doc.getString(nameString),doc.getString(usernameString),doc.getString(passwordString));
+                User user = new User(doc.getString(nameString),doc.getString(usernameString),
+                        doc.getString(passwordString), doc.getString(roleString));
                 return user;
             }
         }
@@ -58,7 +61,8 @@ public class UserDao implements BaseDao {
         List<User> allUsers = new ArrayList<User>();
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
-            User user = new User(doc.getString(nameString),doc.getString(usernameString),doc.getString(passwordString));
+            User user = new User(doc.getString(nameString),doc.getString(usernameString),
+                    doc.getString(passwordString), doc.getString(roleString));
             user.setId(doc.getObjectId(idString).toString());
             allUsers.add(user);
         }
@@ -71,7 +75,8 @@ public class UserDao implements BaseDao {
         List<Document> userDocs = mongoDb.getCollection(collectionName, idString,id);
         if(userDocs != null){
             Document userDoc = userDocs.get(0);
-            User user = new User(userDoc.getString(nameString),userDoc.getString(usernameString),userDoc.getString(passwordString));
+            User user = new User(userDoc.getString(nameString),userDoc.getString(usernameString),
+                    userDoc.getString(passwordString), userDoc.getString(roleString));
             user.setId(userDoc.getObjectId(idString).toString());
             return user;
         }
@@ -87,7 +92,8 @@ public class UserDao implements BaseDao {
                     idString, oldUser.get(0).getString(idString))
                     .append(usernameString, user.getUsername())
                     .append(nameString, user.getName())
-                    .append(passwordString, user.getPassword());
+                    .append(passwordString, user.getPassword())
+                    .append(roleString, user.getRole());
             return mongoDb.updateOne(collectionName, oldUser.get(0), newUserDoc);
         }
         return null;
@@ -98,7 +104,8 @@ public class UserDao implements BaseDao {
         User user = (User)entity;
         Document doc = new Document(usernameString, user.getUsername())
                 .append(nameString, user.getName())
-                .append(passwordString, user.getPassword());
+                .append(passwordString, user.getPassword())
+                .append(roleString, user.getRole());
 
         mongoDb.createCollection(user.getUsername());
         return mongoDb.getCollection(collectionName).insertOne(doc);
