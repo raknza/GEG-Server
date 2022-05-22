@@ -8,6 +8,7 @@ import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Service
@@ -39,7 +40,7 @@ public class UserEventService {
         return userEventDao.insert(userEvent);
     }
 
-    public Object getUserEvents(String username){
+    public List<UserEvent> getUserEvents(String username){
         userEventDao.setUser(username);
         return userEventDao.findAll();
     }
