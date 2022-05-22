@@ -28,8 +28,10 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/user/login","/user/createUser")
                         .permitAll() // // dont authenticate login, register
+                    .antMatchers("/activity/**")
+                        .hasRole("ADMIN")
                     .anyRequest() // all other requests need to be authenticated
-                        .authenticated()
+                        .hasRole("USER")
                 .and() // use stateless session; session won't be used to store user's state.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement()
