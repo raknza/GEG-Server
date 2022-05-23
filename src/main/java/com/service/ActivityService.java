@@ -1,5 +1,6 @@
 package com.service;
 
+import com.model.Statistics;
 import com.model.User;
 import com.model.UserEvent;
 import com.model.UserPoints;
@@ -20,10 +21,12 @@ public class ActivityService {
 
     private final UserService userService;
     private final UserEventService userEventService;
+    private final LevelService levelService;
 
-    public ActivityService(UserService userService, UserEventService userEventService){
+    public ActivityService(UserService userService, UserEventService userEventService, LevelService levelService){
         this.userService = userService;
         this.userEventService = userEventService;
+        this.levelService = levelService;
     }
 
     public Object getUsersInGamePerformance() {
@@ -153,6 +156,15 @@ public class ActivityService {
         return usersGameTime;
     }
 
-
+    public Object getLevelPassedTimeCostStatistics(){
+        int startLevel = 0;
+        int endLevel = 9;
+        Document doc = new Document();
+        List<Statistics> result = levelService.getLevelPassedTimeCostStatistics(startLevel,endLevel);
+        for(int level = startLevel;level<=endLevel;level++){
+            doc.append("level" + level, result.get(level) );
+        }
+        return doc;
+    }
 
 }

@@ -2,11 +2,14 @@ package com.service;
 
 import com.dao.LevelRecordDao;
 import com.model.LevelRecord;
+import com.model.Statistics;
 import com.utils.DateHelper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import net.minidev.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @ComponentScan({"com.dao"})
@@ -64,21 +67,33 @@ public class LevelService {
     }
 
     /**
-     * Get number of level has been passed by user
-     * @param username the username
+     * Get statistics time cost of level
+     * @param level the level
+     * @return result
+     */
+    public Statistics getLevelPassedTimeCostStatistics(int level){
+        levelRecordDao.setLevel(level);
+        List<LevelRecord> allRecords = levelRecordDao.findAll();
+        List<Integer> allTimeCost = new ArrayList<>();
+        for(int i=0; i< allRecords.size();i++){
+            allTimeCost.add(allRecords.get(i).getTimeCost());
+        }
+        Statistics timeCostStatistics = new Statistics(allTimeCost);
+        return timeCostStatistics;
+    }
+
+    /**
+     * Get statistics time cost of level
      * @param start the start of range
      * @param end the end of range
      * @return result
      */
-    public int getUserLevelPassedCount(String username,int start,int end){
-        int count = 0;
+    public List<Statistics> getLevelPassedTimeCostStatistics(int start,int end){
+        List<Statistics> allTimeCostStatistics= new ArrayList<>();
         for (int level = start ; level <= end ; level++){
-            levelRecordDao.setLevel(level);
-            if( levelRecordDao.findByUsername(username) != null ){
-                count++;
-            }
+            allTimeCostStatistics.add(getLevelPassedTimeCostStatistics(level));
         }
-        return count;
+        return allTimeCostStatistics;
     }
 
 }
