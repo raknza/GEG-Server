@@ -8,7 +8,7 @@ import java.util.*;
 public class MathHelper {
 
     public static double median(List<Integer> total) {
-        double j = 0;
+        double j;
         //集合排序
         Collections.sort(total);
         int size = total.size();
@@ -25,11 +25,11 @@ public class MathHelper {
         int n = arr.length;
 
         if (n == 0) {
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         }
 
         if (n == 1) {
-            return Arrays.asList(arr[0]);
+            return Collections.singletonList(arr[0]);
         }
 
         Map<Integer,Integer> freqMap = new HashMap<>();
@@ -42,12 +42,7 @@ public class MathHelper {
         // 將 freqMap 中所有的鍵值對（鍵為數，值為數出現的頻率）放入一個 ArrayList
         List<Map.Entry<Integer,Integer>> entries = new ArrayList<>(freqMap.entrySet());
         // 對 entries 按出現頻率從大到小排序
-        Collections.sort(entries,new Comparator<Map.Entry<Integer,Integer>>() {
-            @Override
-            public int compare(Map.Entry<Integer,Integer> e1,Map.Entry<Integer,Integer> e2) {
-                return e2.getValue() - e1.getValue();
-            }
-        });
+        entries.sort((e1, e2) -> e2.getValue() - e1.getValue());
 
         List<Integer> modalNums = new ArrayList<>();
         modalNums.add(entries.get(0).getKey()); // 排序後第一個 entry 的鍵肯定是一個眾數

@@ -5,7 +5,7 @@ import java.util.Date;
 
 public final class DateHelper {
 
-    private static Calendar calendar = Calendar.getInstance();
+    private static final Calendar calendar = Calendar.getInstance();
 
     public static String getNowTime(){
         Date nowDate = new Date();

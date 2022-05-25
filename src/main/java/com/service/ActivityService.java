@@ -30,17 +30,17 @@ public class ActivityService {
     }
 
     public Object getUsersInGamePerformance() {
-        List<UserPoints> allUsersPoints = (List<UserPoints>) userService.getAllUsersPoints();
+        List<UserPoints> allUsersPoints = userService.getAllUsersPoints();
         int sumGamePoints = 0;
         int sumLevelPoints = 0;
         int sumAchievementsPoints = 0;
         int sumLevelPassedCount = 0;
         int sumAchievementsCount = 0;
-        List<Integer> usersGamePoints = new ArrayList<Integer>();
-        List<Integer> usersLevelPoints = new ArrayList<Integer>();
-        List<Integer> usersAchievementsPoints = new ArrayList<Integer>();
-        List<Integer> usersLevelPassedCount = new ArrayList<Integer>();
-        List<Integer> usersAchievementsCount = new ArrayList<Integer>();
+        List<Integer> usersGamePoints = new ArrayList<>();
+        List<Integer> usersLevelPoints = new ArrayList<>();
+        List<Integer> usersAchievementsPoints = new ArrayList<>();
+        List<Integer> usersLevelPassedCount = new ArrayList<>();
+        List<Integer> usersAchievementsCount = new ArrayList<>();
         for(int i =0; i< allUsersPoints.size() ; i++){
             usersGamePoints.add(allUsersPoints.get(i).getGamePoints());
             usersLevelPoints.add(allUsersPoints.get(i).getLevelPoints());
@@ -90,8 +90,8 @@ public class ActivityService {
         int gameCount = 0;
         List<Document> allGameCounts = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startEventTime = null;
-        Date pointerEventTime = null;
+        Date startEventTime;
+        Date pointerEventTime;
         List<UserEvent> allEvents = userEventService.getUserEvents(username);
 
         if( allEvents.size() > 0) {
@@ -106,7 +106,7 @@ public class ActivityService {
 
             for (int i = 1; i < allEvents.size(); i++) {
                 UserEvent event = allEvents.get(i);
-                Date nextEventTime = null;
+                Date nextEventTime;
                 try {
                     nextEventTime = sdf.parse(event.getTime());
                 } catch (Exception error) {
@@ -156,7 +156,7 @@ public class ActivityService {
 
     public Object getAllUserGameTime() {
 
-        List<Document> usersGameTime = new ArrayList<Document>();
+        List<Document> usersGameTime = new ArrayList<>();
         List<User> Users = userService.findAll();
         for(int i=0; i< Users.size(); i++){
             User user = Users.get(i);
@@ -192,7 +192,7 @@ public class ActivityService {
     }
 
     public Object getAllUserActivityByDate(){
-        List<Document> usersActivityByDate = new ArrayList<Document>();
+        List<Document> usersActivityByDate = new ArrayList<>();
         List<User> users = userService.findAll();
         for(int userIndex=0;userIndex<users.size();userIndex++){
             String username = users.get(userIndex).getUsername();
@@ -202,7 +202,7 @@ public class ActivityService {
             doc.append("username", username);
             int activity = 0;
             long count = 0;
-            List<String> allActivityDate = new ArrayList<String>();
+            List<String> allActivityDate = new ArrayList<>();
             for(int j=0; j< allEvents.size();j++){
                 String activityDate = allEvents.get(j).getTime().split(" ")[0];
                 if( !allActivityDate.contains( activityDate)  ) {

@@ -28,7 +28,7 @@ public class UserEventController {
                                                   @RequestParam("eventContent") String eventContent) {
 
         Object result = userEventService.logUserEvent(request, username, eventName, eventContent);
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**
@@ -39,6 +39,6 @@ public class UserEventController {
     public ResponseEntity<Object> getUserEvents(@RequestParam("username") String username) {
 
         Object result = userEventService.getUserEvents(username);
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

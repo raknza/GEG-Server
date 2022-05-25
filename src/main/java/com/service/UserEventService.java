@@ -53,7 +53,7 @@ public class UserEventService {
         String remoteAddr = request.getRemoteAddr();
         String forwarded = request.getHeader("X-Forwarded-For");
         String realIp = request.getHeader("X-Real-IP");
-        String ip = null;
+        String ip;
 
         if (realIp == null) {
             if (forwarded == null) {

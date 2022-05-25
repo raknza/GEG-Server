@@ -35,7 +35,7 @@ public class LevelService {
         levelRecordDao.setLevel(level);
         LevelRecord oldRecord = levelRecordDao.findByUsername(username);
         LevelRecord newLevelRecord = new LevelRecord(username, nowTime, timeCost, lineCost);
-        Object result = null;
+        Object result;
         if (oldRecord != null) {
             // if old record better than the new one
             if ( newLevelRecord.getTimeCost() > oldRecord.getTimeCost() ||
@@ -78,8 +78,7 @@ public class LevelService {
         for(int i=0; i< allRecords.size();i++){
             allTimeCost.add(allRecords.get(i).getTimeCost());
         }
-        Statistics timeCostStatistics = new Statistics(allTimeCost);
-        return timeCostStatistics;
+        return new Statistics(allTimeCost);
     }
 
     /**

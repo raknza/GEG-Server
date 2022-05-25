@@ -19,26 +19,26 @@ public class ActivityController {
 
     @GetMapping("/getUsersInGamePerformance")
     public ResponseEntity<Object> getUsersInGamePerformance() {
-        return new ResponseEntity<Object>(activityService.getUsersInGamePerformance(), HttpStatus.OK);
+        return new ResponseEntity<>(activityService.getUsersInGamePerformance(), HttpStatus.OK);
     }
 
     @GetMapping("/getUserGameTime")
     public ResponseEntity<Object> getUserGameTime(@RequestParam String username){
-        return new ResponseEntity<Object>(activityService.getUserGameTime(username), HttpStatus.OK);
+        return new ResponseEntity<>(activityService.getUserGameTime(username), HttpStatus.OK);
     }
 
     @GetMapping("/getAllUserGameTime")
     public ResponseEntity<Object> getAllUserGameTime(){
-        return new ResponseEntity<Object>(activityService.getAllUserGameTime(), HttpStatus.OK);
+        return new ResponseEntity<>(activityService.getAllUserGameTime(), HttpStatus.OK);
     }
 
     @GetMapping("/getLevelPassedTimeCostStatistics")
     public ResponseEntity<Object> getLevelPassedTimeCostStatistics(){
-        return new ResponseEntity<Object>(activityService.getLevelPassedTimeCostStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(activityService.getLevelPassedTimeCostStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/getAllUserActivityByDate")
     public ResponseEntity<Object> getAllUserActivityByDate(){
-        return new ResponseEntity<Object>(activityService.getAllUserActivityByDate(), HttpStatus.OK);
+        return new ResponseEntity<>(activityService.getAllUserActivityByDate(), HttpStatus.OK);
     }
 }

@@ -58,12 +58,12 @@ public class LevelRecordDao implements BaseDao {
     public List<LevelRecord> findAll(){
         String collectionName = CollectionNameHolder.get();
         Document sort = new Document("$sort", new Document(timeCostString, 1).append(lineCostString,1).append(timeString,-1));
-        List<Document> aggregateList = new ArrayList<Document>();
+        List<Document> aggregateList = new ArrayList<>();
         aggregateList.add(sort);
         AggregateIterable<Document> documents = mongoDb.getCollection(collectionName).aggregate(aggregateList);
         MongoCursor<Document> mongoCursor = documents.iterator();
 
-        List<LevelRecord> levelRecords = new ArrayList<LevelRecord>();
+        List<LevelRecord> levelRecords = new ArrayList<>();
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
             LevelRecord levelRecord  = new LevelRecord(doc.getString(usernameString), doc.getString(timeString),

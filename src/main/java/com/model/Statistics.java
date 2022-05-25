@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Statistics {
 
-    double average;
     int min;
     int max;
+    double average;
     double median;
     List<Integer> modalNums;
     int count;
