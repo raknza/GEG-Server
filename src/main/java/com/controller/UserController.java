@@ -25,10 +25,10 @@ public class UserController {
         ResponseEntity<Object> response;
         try {
             List<User> result = userService.findAll();
-            response = new ResponseEntity<Object>(result, HttpStatus.OK);
+            response = new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception error) {
             System.out.println(error.getMessage());
-            response = new ResponseEntity<Object>(error.getMessage(), HttpStatus.FORBIDDEN);
+            response = new ResponseEntity<>(error.getMessage(), HttpStatus.FORBIDDEN);
         }
 
         return response;
@@ -43,9 +43,9 @@ public class UserController {
         ResponseEntity<Object> response;
         try {
             Object result = userService.createUser(name,username,password);
-            response = new ResponseEntity<Object>(result, HttpStatus.OK);
+            response = new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception error) {
-            response = new ResponseEntity<Object>( ((BaseException)error).toJson(), HttpStatus.FORBIDDEN);
+            response = new ResponseEntity<>( ((BaseException)error).toJson(), HttpStatus.FORBIDDEN);
         }
         return response;
     }
@@ -57,20 +57,20 @@ public class UserController {
     ) {
         ResponseEntity<Object> response;
         Object result = userService.login(username,password);
-        response = new ResponseEntity<Object>(result, HttpStatus.OK);
+        response = new ResponseEntity<>(result, HttpStatus.OK);
         return response;
     }
 
     @GetMapping("/getUserPoints")
     public ResponseEntity<Object> getUserPoints(@RequestParam("username") String username){
         Object result = userService.getUserPoints(username);
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/getAllUsersPoints")
     public ResponseEntity<Object> getAllUsersPoints(){
         Object result = userService.getAllUsersPoints();
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

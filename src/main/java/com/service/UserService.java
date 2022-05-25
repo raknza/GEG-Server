@@ -7,7 +7,6 @@ import com.exception.BaseException;
 import com.model.*;
 import com.utils.JwtHandler;
 import com.utils.MD5Helper;
-import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +65,7 @@ public class UserService {
      * @return the result as {@link LoginResult}
      */
     public LoginResult login(String username, String password){
-        boolean result = false;
+        boolean result;
         User user = userDao.findByUsername(username);
         if (user != null) {
             result = user.checkPassword(MD5Helper.encodeToMD5(password));
@@ -99,7 +98,7 @@ public class UserService {
         // get level passed record
         userEventDao.setUser(username);
         List<UserEvent> userEvents = userEventDao.findByEventName("level_passed");
-        List<String> levelPassed = new ArrayList<String>();
+        List<String> levelPassed = new ArrayList<>();
         if( userEvents!= null ){
             for(int i = 0 ; i < userEvents.size() ; i++){
                 String level = userEvents.get(i).getEventContent().getString("level");
@@ -109,20 +108,19 @@ public class UserService {
             }
             levelPassedCounts = levelPassed.size();
         }
-        UserPoints userPoints = new UserPoints(levelPassedCounts,achievementCounts,username);
-        return userPoints;
+        return new UserPoints(levelPassedCounts,achievementCounts,username);
     }
 
     /**
      * Get all users point in game.
      * @return the result will be a List of {@link UserPoints} and will be descending order.
      */
-    public Object getAllUsersPoints(){
+    public List<UserPoints> getAllUsersPoints(){
         List<User> allUsers = userDao.findAll();
         if (allUsers == null){
-            return new JSONObject().appendField("message","Do not have any user.");
+            return null;
         }
-        List<UserPoints> allUsersPoints= new ArrayList<UserPoints>();
+        List<UserPoints> allUsersPoints= new ArrayList<>();
 
         for(int i =0 ; i < allUsers.size() ; i++){
             UserPoints userPoints = (UserPoints)getUserPoints(allUsers.get(i).getUsername());

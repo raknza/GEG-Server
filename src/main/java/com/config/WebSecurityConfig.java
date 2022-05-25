@@ -28,16 +28,16 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/user/login","/user/createUser")
                         .permitAll() // // dont authenticate login, register
+                    .antMatchers("/activity/**")
+                        .hasRole("ADMIN")
                     .anyRequest() // all other requests need to be authenticated
-                        .authenticated()
+                        .hasRole("USER")
                 .and() // use stateless session; session won't be used to store user's state.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        jwtRequestFilter.setAuthenticationManager(authenticationManager);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 

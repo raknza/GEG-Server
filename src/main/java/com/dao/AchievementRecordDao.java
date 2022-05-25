@@ -41,7 +41,7 @@ public class AchievementRecordDao implements BaseDao {
         MongoCollection<Document> documents = mongoDb.getCollection(collectionName);
         FindIterable<Document> findIterable = documents.find();
         MongoCursor<Document> mongoCursor = findIterable.iterator();
-        List<AchievementRecord> userAchievementRecords = new ArrayList<AchievementRecord>();
+        List<AchievementRecord> userAchievementRecords = new ArrayList<>();
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
             AchievementRecord achievementRecord = new AchievementRecord(doc.getString(timeString),

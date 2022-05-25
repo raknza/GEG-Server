@@ -19,12 +19,12 @@ public class AchievementController {
     public ResponseEntity<Object> logAchievement(@RequestParam("username") String username,
                                                  @RequestParam("achievement") String achievement) {
         Object result = achievementService.logAchievement(username, achievement);
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("getUserAchievements")
     public ResponseEntity<Object> getUserAchievements(@RequestParam("username") String username) {
         Object result = achievementService.getUserAchievements(username);
-        return new ResponseEntity<Object>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

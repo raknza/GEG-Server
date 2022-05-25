@@ -25,7 +25,7 @@ public class UserEvent extends BaseEntity {
         this.eventName = eventName;
         this.ip = ip;
         this.time = time;
-        this.eventContent = Document.parse(eventContent);;
+        this.eventContent = Document.parse(eventContent);
     }
 
     /**

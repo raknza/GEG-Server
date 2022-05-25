@@ -39,7 +39,7 @@ public class MongoDb {
         MongoCollection<Document> documents = getClient().getCollection(collection);
         FindIterable<Document> findIterable = documents.find().filter(eq(filterKey, filterValue));
         MongoCursor<Document> mongoCursor = findIterable.iterator();
-        List<Document> docs = new ArrayList<Document>();
+        List<Document> docs = new ArrayList<>();
 
         if(!mongoCursor.hasNext()){
             return null;

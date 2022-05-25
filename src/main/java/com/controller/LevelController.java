@@ -24,12 +24,12 @@ public class LevelController {
     ) {
         ResponseEntity<Object> response;
         Object result = levelService.logLevelRecord(username, timeCost, lineCost, level);
-        response = new ResponseEntity<Object>(result, HttpStatus.OK);
+        response = new ResponseEntity<>(result, HttpStatus.OK);
         return response;
     }
 
     @GetMapping("/getLevelLeaderboard")
     public ResponseEntity<Object> getLevelLeaderboard(@RequestParam("level") int level) {
-        return new ResponseEntity<Object>(levelService.getLevelLeaderboard(level), HttpStatus.OK);
+        return new ResponseEntity<>(levelService.getLevelLeaderboard(level), HttpStatus.OK);
     }
 }

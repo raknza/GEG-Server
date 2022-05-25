@@ -44,9 +44,8 @@ public class UserDao implements BaseDao {
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
             if(doc.getString(usernameString).equals(username)){
-                User user = new User(doc.getString(nameString),doc.getString(usernameString),
+                return new User(doc.getString(nameString),doc.getString(usernameString),
                         doc.getString(passwordString), doc.getString(roleString));
-                return user;
             }
         }
         return null;
@@ -58,7 +57,7 @@ public class UserDao implements BaseDao {
         MongoCollection<Document> documents = mongoDb.getCollection(collectionName);
         FindIterable<Document> findIterable = documents.find();
         MongoCursor<Document> mongoCursor = findIterable.iterator();
-        List<User> allUsers = new ArrayList<User>();
+        List<User> allUsers = new ArrayList<>();
         while (mongoCursor.hasNext()) {
             Document doc = mongoCursor.next();
             User user = new User(doc.getString(nameString),doc.getString(usernameString),

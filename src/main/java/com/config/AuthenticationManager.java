@@ -22,7 +22,7 @@ public class AuthenticationManager implements org.springframework.security.authe
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(user.getRole().equals("admin")){
+        if(user.getRole() != null && user.getRole().equals("admin")){
             return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials(), ADMIN_ROLES);
         }
         else{
