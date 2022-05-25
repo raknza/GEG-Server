@@ -87,46 +87,70 @@ public class ActivityService {
     public Object getUserGameTime(String username) {
 
         int gameTime = 0;
+        int gameCount = 0;
+        List<Document> allGameCounts = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startEventTime = null;
-        boolean start = true;
+        Date pointerEventTime = null;
         List<UserEvent> allEvents = userEventService.getUserEvents(username);
-        for (int i=0 ; i< allEvents.size(); i++) {
-            UserEvent event = allEvents.get(i);
-            if(start){
-                try {
-                    startEventTime = sdf.parse(event.getTime());
-                } catch(Exception error){
-                    throw new ParserException(error.getMessage());
-                }
-                start = !start;
+
+        if( allEvents.size() > 0) {
+            // set start
+            try {
+                UserEvent event = allEvents.get(0);
+                startEventTime = sdf.parse(event.getTime());
+                pointerEventTime = sdf.parse(event.getTime());
+            } catch (Exception error) {
+                throw new ParserException(error.getMessage());
             }
-            else{
+
+            for (int i = 1; i < allEvents.size(); i++) {
+                UserEvent event = allEvents.get(i);
                 Date nextEventTime = null;
                 try {
                     nextEventTime = sdf.parse(event.getTime());
-                } catch(Exception error){
+                } catch (Exception error) {
                     throw new ParserException(error.getMessage());
                 }
-                int diffInSeconds = (int)( (nextEventTime.getTime() - startEventTime.getTime())
-                        / (1000 ) );
-                if( diffInSeconds <= 3600 ){
+                int diffInSeconds = (int) ((nextEventTime.getTime() - pointerEventTime.getTime())
+                        / (1000));
+                // if event time diff <= 30 minutes
+                if (diffInSeconds <= 1800) {
                     gameTime += diffInSeconds;
-                    start = !start;
-                }
-                else {
                     try {
+                        pointerEventTime = sdf.parse(event.getTime());
+                    } catch (Exception error) {
+                        throw new ParserException(error.getMessage());
+                    }
+                } else { // event diff > 30 minutes
+                    try {
+                        Document oneGameCount = new Document();
+                        oneGameCount.append("start", sdf.format(startEventTime.getTime()));
+                        oneGameCount.append("end", sdf.format(pointerEventTime.getTime()));
+                        allGameCounts.add(oneGameCount);
+                        gameCount++;
+
                         startEventTime = sdf.parse(event.getTime());
-                    } catch(Exception error){
+                        pointerEventTime = sdf.parse(event.getTime());
+                    } catch (Exception error) {
                         throw new ParserException(error.getMessage());
                     }
                 }
-
+            }
+            if( allGameCounts.size() == 0 ){
+                Document oneGameCount = new Document();
+                oneGameCount.append("start", sdf.format(startEventTime.getTime()));
+                oneGameCount.append("end", sdf.format(pointerEventTime.getTime()));
+                allGameCounts.add(oneGameCount);
+                gameCount++;
             }
         }
+
         gameTime = gameTime/60;
         Document doc = new Document();
-        doc.append("game_time_min",gameTime);
+        doc.append("gameTimeWithMin",gameTime);
+        doc.append("gameCount",gameCount);
+        doc.append("gameCountTime",allGameCounts);
         return doc;
     }
 
@@ -137,14 +161,14 @@ public class ActivityService {
         for(int i=0; i< Users.size(); i++){
             User user = Users.get(i);
             Document userGameTime = (Document)getUserGameTime(user.getUsername());
-            int gameTime = userGameTime.getInteger("game_time_min");
+            int gameTime = userGameTime.getInteger("gameTimeWithMin");
             userGameTime.append("user",user.getUsername());
             usersGameTime.add(userGameTime);
 
             // Sort
             int uIndex = usersGameTime.size()-1;
             for(int j = uIndex ; j > 0; j--){
-                if( gameTime > usersGameTime.get(j-1).getInteger("game_time_min")){
+                if( gameTime > usersGameTime.get(j-1).getInteger("gameTimeWithMin")){
                     Document tmp = usersGameTime.get(j-1);
                     usersGameTime.set(j-1,usersGameTime.get(j));
                     usersGameTime.set(j,tmp);
@@ -167,73 +191,47 @@ public class ActivityService {
         return doc;
     }
 
-    public Object getUserGameCount(String username){
-        int gameCount = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startEventTime = null;
-        boolean start = true;
-        List<UserEvent> allEvents = userEventService.getUserEvents(username);
-        for(int i=0;i<allEvents.size();i++){
-            UserEvent event = allEvents.get(i);
-            if(start){
-                try {
-                    startEventTime = sdf.parse(event.getTime());
-                } catch(Exception error){
-                    throw new ParserException(error.getMessage());
-                }
-                start = !start;
-            }
-            else{
-                Date nextEventTime = null;
-                try {
-                    nextEventTime = sdf.parse(event.getTime());
-                } catch(Exception error){
-                    throw new ParserException(error.getMessage());
-                }
-                int diffInSeconds = (int)( (nextEventTime.getTime() - startEventTime.getTime())
-                        / (1000 ) );
-                if( diffInSeconds >= 1800 ){
-                    gameCount += 1;
-                    start = !start;
-                }
-                else {
-                    try {
-                        startEventTime = sdf.parse(event.getTime());
-                    } catch(Exception error){
-                        throw new ParserException(error.getMessage());
-                    }
-                }
-
-            }
-        }
-        Document doc = new Document();
-        doc.append("game_count",gameCount);
-        return doc;
-    }
-
-    public Object getAllUserGameCount() {
-
-        List<Document> usersGameCount = new ArrayList<Document>();
+    public Object getAllUserActivityByDate(){
+        List<Document> usersActivityByDate = new ArrayList<Document>();
         List<User> users = userService.findAll();
-        for(int i=0;i<users.size();i++){
-            User user = users.get(i);
-            Document userGameCount = (Document)getUserGameCount(user.getUsername());
-            int gameCount = userGameCount.getInteger("game_count");
-            userGameCount.append("user",user.getUsername());
-            usersGameCount.add(userGameCount);
+        for(int userIndex=0;userIndex<users.size();userIndex++){
+            String username = users.get(userIndex).getUsername();
+            List<UserEvent> allEvents = userEventService.getUserEvents(username);
 
+            Document doc = new Document();
+            doc.append("username", username);
+            int activity = 0;
+            long count = 0;
+            List<String> allActivityDate = new ArrayList<String>();
+            for(int j=0; j< allEvents.size();j++){
+                String activityDate = allEvents.get(j).getTime().split(" ")[0];
+                if( !allActivityDate.contains( activityDate)  ) {
+                    activity++;
+                    doc.append("activity" + activity, activityDate);
+                    allActivityDate.add(activityDate);
+                }
+                count++;
+            }
+
+            doc.append("activity" , activity);
+            doc.append("eventCount" , count);
+            usersActivityByDate.add(doc);
             // Sort
-            int uIndex = usersGameCount.size()-1;
-            for(int j = uIndex ; j > 0; j--){
-                if( gameCount > usersGameCount.get(j-1).getInteger("game_count")){
-                    Document tmp = usersGameCount.get(j-1);
-                    usersGameCount.set(j-1,usersGameCount.get(j));
-                    usersGameCount.set(j,tmp);
+            int uIndex = usersActivityByDate.size()-1;
+            for(int i = uIndex ; i > 0; i--){
+                if( activity > usersActivityByDate.get(i-1).getInteger("activity") ){
+                    Document tmp = usersActivityByDate.get(i-1);
+                    usersActivityByDate.set(i-1,usersActivityByDate.get(i));
+                    usersActivityByDate.set(i,tmp);
+                }
+                else if ( activity == usersActivityByDate.get(i-1).getInteger("activity") &&  count > usersActivityByDate.get(i-1).getLong("eventCount") ){
+                    Document tmp = usersActivityByDate.get(i-1);
+                    usersActivityByDate.set(i-1,usersActivityByDate.get(i));
+                    usersActivityByDate.set(i,tmp);
                 }
             }
         }
-
-        return usersGameCount;
+        return usersActivityByDate;
     }
 
 }

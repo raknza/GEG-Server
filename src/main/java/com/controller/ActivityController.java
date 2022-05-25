@@ -37,8 +37,8 @@ public class ActivityController {
         return new ResponseEntity<Object>(activityService.getLevelPassedTimeCostStatistics(), HttpStatus.OK);
     }
 
-    @GetMapping("/getAllUserGameCount")
-    public ResponseEntity<Object> getAllUserGameCount(){
-        return new ResponseEntity<Object>(activityService.getAllUserGameCount(), HttpStatus.OK);
+    @GetMapping("/getAllUserActivityByDate")
+    public ResponseEntity<Object> getAllUserActivityByDate(){
+        return new ResponseEntity<Object>(activityService.getAllUserActivityByDate(), HttpStatus.OK);
     }
 }
