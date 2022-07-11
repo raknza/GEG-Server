@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @EnableMongoRepositories(basePackages = {"com.dao"})
-public class application extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(application.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(application.class);
+        return application.sources(Application.class);
     }
 
 
