@@ -88,15 +88,17 @@
 	</dependencies>
 
 	<build>
+		<finalName>GEG-Server</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>DemoApplication</mainClass>
+					<mainClass>com.app.Application</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<packaging>war</packaging>
 
 </project>
